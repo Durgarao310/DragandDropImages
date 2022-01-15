@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import './App.css';
 import CreateProject from './pages/CreateProject';
 import CreateLabels from './pages/CreateLabels';
@@ -6,10 +5,8 @@ import CreateLabels from './pages/CreateLabels';
 import { Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
-  const getUser = useSelector((state) => state);
-  console.log(getUser)
   return (
-    <div className="App">
+    <div className="w-screen h-screen bg-backColor overflow-y-scroll">
       <Routes>
           <Route path="/create-project" element={<CreateProject />} />
           <Route path="/" element={<Navigate to="/create-project" />} />

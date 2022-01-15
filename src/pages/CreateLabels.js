@@ -1,13 +1,12 @@
-import React, { useState, useEffect }from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 
 const CreateLabels = () => {
     let getProject = useSelector((state) => state?.project?.project)
     let [images, setImages] = useState([])
     let [label, setLabel] = useState("")
-    let [index, setIndex ] = useState(0)
+    let [index, setIndex] = useState(0)
     let [loading, setLoading] = useState(false)
-    
 
     useEffect(() => {
         addImages()
@@ -15,82 +14,81 @@ const CreateLabels = () => {
 
     useEffect(() => {
         if (images?.length > 0) {
-             setLabel(images[index].label)
-         }
+            setLabel(images[index].label)
+        }
     }, [index || images])
 
-    const addImages = async () => {
+    const addImages = () => {
         setLoading(true)
         setImages(getProject?.project)
         setLoading(false)
     }
 
     const indexIncrement = async () => {
-        let id = images[index].id
-        let res = images.filter(v => v.id !== id)
-        let imgfile = images[index].imageFile
-        let r = { id: id, label: label, imageFile: imgfile }
-        let b = [r,...res]
-        setImages(b)
-        if (images.length > index+1) {
-            setIndex(index+1)
+        if (images.length > index + 1) {
+            let id = images[index].id
+            let res = images.filter(v => v.id !== id)
+            let imgfile = images[index].imageFile
+            let r = { id: id, label: label, imageFile: imgfile }
+            let b = [r, ...res]
+            setImages(b)
+            setIndex(index + 1)
         }
-        
     }
     const indexDecrement = () => {
-        let id = images[index].id
-        let res = images.filter(v => v.id !== id)
-        let imgfile = images[index].imageFile
-        let r = { id: id, label: label, imageFile: imgfile }
-        let a = [...res,r]
-        setImages(a)
         if (index > 0) {
-            setIndex(index-1)
+            let id = images[index].id
+            let res = images.filter(v => v.id !== id)
+            let imgfile = images[index].imageFile
+            let r = { id: id, label: label, imageFile: imgfile }
+            let a = [...res, r]
+            setImages(a)
+            setIndex(index - 1)
         }
     }
 
     const SaveLabel = () => {
-       return (
+        return (
             <div>
-            <a
-                href={
-                "data:text/json;charset=utf-8," +
-                encodeURIComponent(JSON.stringify({projectName: getProject.name, description: getProject.description, labels:images}))
-                }
-                download={`${getProject.name}.json`}
-            >
-            <p   className="bg-gray-900 text-white px-4 py-1 rounded-md cursor-pointer" >Save</p>
-            </a>
+                <a
+                    href={
+                        "data:text/json;charset=utf-8," +
+                        encodeURIComponent(JSON.stringify({ projectName: getProject.name, description: getProject.description, labels: images }))
+                    }
+                    download={`${getProject.name}.json`}
+                >
+                    <p className="text-white bg-gradient-to-br flex justify-center items-center from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:ring-green-200 dark:focus:ring-green-800 font-medium  text-sm px-5 py-2.5 text-center h-12 rounded-md cursor-pointer" >Save</p>
+                </a>
             </div>
         );
-        
+
     }
 
-    
+
 
     return (
-        <div className="h-screen w-screen">
+        <div className="flex justify-center items-center py-8">
             {loading ?
                 <div>
                     loading....
                 </div> :
                 <div>
-                        <div className="py-4">
-                            <p className="text-3xl">Label Images</p>
-                        </div>
+                    <div className="py-4 px-2">
+                        <p className="text-3xl text-gray-400">Label Images</p>
+                    </div>
                     <div className="flex flex-col items-start">
                         {images?.length > 0 &&
-                            <div className="px-10">
-                                <div className="flex flex-col mb-6 bg-gray-200 p-10 rounded-lg">
+                            <div>
+                                <div className="flex flex-col mb-6 bg-gray-800 p-6 rounded-lg justify-center items-center">
                                     <div className="flex flex-col items-star">
                                         <div className="items-star">
-                                            <label className="flex float-left mt-2">Label</label>
+                                            <label className="flex float-left mt-2 text-gray-200">Label</label>
                                         </div>
-                                        <div className="my-2 flex float-left">
+                                        <div className=" flex float-left">
                                             <input
-                                                className="p-2 text-black bg-gray-400 w-52 mb-4 rounded-md"
+                                                className="px-3 py-1.5 bg-gray-300 my-2 rounded-md w-full shadow-sm	text-gray-900 focus:text-gray-900 focus:bg-gray-350 focus:border-blue-600 focus:outline-none"
                                                 value={label}
-                                                onChange={(e)=>setLabel(e.target.value)}
+                                                onChange={(e) => setLabel(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -98,25 +96,26 @@ const CreateLabels = () => {
                                         <img className="rounded-lg w-56 h-44" src={URL.createObjectURL(images[index].imageFile)} alt={images[index].imageFile.name} />
                                     </div>
                                 </div>
-                                <div className="flex flex-row ">
+
+                                <div className="flex flex-row items-center">
                                     <div className="mx-2">
-                                        <p className={index === 0 ? "bg-gray-400 text-white px-4 py-1 rounded-md cursor-not-allowed" : "bg-gray-900 text-white px-4 cursor-pointer py-1 rounded-md"} onClick={()=>indexDecrement()}>Prev</p>
+                                        <p className={index === 0 ? "bg-gray-800 text-white px-8 rounded-md cursor-not-allowed h-12  flex justify-center items-center" : "flex justify-center items-center h-12 bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500 px-8 py-1 cursor-pointer rounded-md text-gray-200"} onClick={() => indexDecrement()}>Prev</p>
                                     </div>
                                     <div className="mx-2">
-                                        <p className={index === images.length-1 ? "bg-gray-400 text-white px-4 py-1 rounded-md cursor-not-allowed": "cursor-pointer bg-gray-900 text-white px-4 py-1 rounded-md"} onClick={() => indexIncrement()}>Next</p>
-                                     </div>
-                                
+                                        <p className={index === images.length - 1 ? "bg-gray-800 text-white px-8 flex justify-center mx-2 items-center rounded-md cursor-not-allowed h-12" : "mx-2 h-12 bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500 px-8 flex justify-center items-center cursor-pointer rounded-md text-gray-200"} onClick={() => indexIncrement()}>Next</p>
+                                    </div>
+
                                     <div className="mx-2">
                                         <SaveLabel />
                                     </div>
                                 </div>
-                           </div>
+                            </div>
                         }
                     </div>
                 </div>
-            } 
+            }
         </div>
     )
- }
+}
 export default CreateLabels;
 
