@@ -8,6 +8,7 @@ const CreateLabels = () => {
     let [index, setIndex] = useState(0)
     let [loading, setLoading] = useState(false)
 
+
     useEffect(() => {
         addImages()
     }, [])
@@ -18,6 +19,12 @@ const CreateLabels = () => {
         }
     }, [index || images])
 
+    useEffect(()=>{
+        if(images.length > 0){
+            images[index].label = label
+        }
+    },[label])
+
     const addImages = () => {
         setLoading(true)
         setImages(getProject?.project)
@@ -26,26 +33,15 @@ const CreateLabels = () => {
 
     const indexIncrement = async () => {
         if (images.length > index + 1) {
-            let id = images[index].id
-            let res = images.filter(v => v.id !== id)
-            let imgfile = images[index].imageFile
-            let r = { id: id, label: label, imageFile: imgfile }
-            let b = [r, ...res]
-            setImages(b)
             setIndex(index + 1)
         }
     }
     const indexDecrement = () => {
         if (index > 0) {
-            let id = images[index].id
-            let res = images.filter(v => v.id !== id)
-            let imgfile = images[index].imageFile
-            let r = { id: id, label: label, imageFile: imgfile }
-            let a = [...res, r]
-            setImages(a)
             setIndex(index - 1)
         }
     }
+
 
     const SaveLabel = () => {
         return (
@@ -99,10 +95,10 @@ const CreateLabels = () => {
 
                                 <div className="flex flex-row items-center">
                                     <div className="mx-2">
-                                        <p className={index === 0 ? "bg-gray-800 text-white px-8 rounded-md cursor-not-allowed h-12  flex justify-center items-center" : "flex justify-center items-center h-12 bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500 px-8 py-1 cursor-pointer rounded-md text-gray-200"} onClick={() => indexDecrement()}>Prev</p>
+                                        <p className={index === 0 ? "bg-gray-800 text-white px-6 rounded-md cursor-not-allowed h-12  flex justify-center items-center" : "flex justify-center items-center h-12 bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500 px-6 py-1 cursor-pointer rounded-md text-gray-200"} onClick={() => indexDecrement()}>Prev</p>
                                     </div>
                                     <div className="mx-2">
-                                        <p className={index === images.length - 1 ? "bg-gray-800 text-white px-8 flex justify-center mx-2 items-center rounded-md cursor-not-allowed h-12" : "mx-2 h-12 bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500 px-8 flex justify-center items-center cursor-pointer rounded-md text-gray-200"} onClick={() => indexIncrement()}>Next</p>
+                                        <p className={index === images.length - 1 ? "bg-gray-800 text-white px-6 flex justify-center mx-2 items-center rounded-md cursor-not-allowed h-12" : "mx-2 h-12 bg-gradient-to-l from-indigo-500 via-purple-500 to-pink-500 px-6 flex justify-center items-center cursor-pointer rounded-md text-gray-200"} onClick={() => indexIncrement()}>Next</p>
                                     </div>
 
                                     <div className="mx-2">

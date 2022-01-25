@@ -18,7 +18,7 @@ const CreateProject = () => {
     // console.log(files[0].imageFile.name)
     for (let i = 0; i < files.length; i++) {
       const id = uuid()
-      images = [{ id: id, label: `images-${id}`, imageFile: files[i] }, ...images]
+      images = [{ id: id, name: `images-${id}`, imageFile: files[i] }, ...images]
     }
     setImages(images)
   };
@@ -82,7 +82,7 @@ const CreateProject = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
             <div className="flex my-4">
-              <button className="flex bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 px-6 py-2 rounded-lg text-white" type="submit">create</button>
+              <button className="h-12 flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 px-6 py-2 rounded-lg text-white" type="submit">create</button>
             </div>
           </div>
         </div>
